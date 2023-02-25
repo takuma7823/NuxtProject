@@ -1,87 +1,114 @@
 <template>
   <div>
-    <v-container>
-      <div
-        v-ripple
-        class="text-center elevation-2 pa-12 text-h5"
+    <NuxtLink :to="`/about`">about.vue</NuxtLink>
+    <v-parallax
+      src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
+      class="parallax"
+    >
+      <div class="d-flex flex-column fill-height justify-center align-center text-white">
+        <h1 class="text-h4 font-weight-thin mb-4">
+          Vuetify
+        </h1>
+        <h4 class="subheading">
+          Build your application today!
+        </h4>
+      </div>
+    </v-parallax>
+    <div class="card_list">
+      <v-card
+        class="card_list_item mx-auto"
+        max-width="344"
+        variant="outlined"
       >
-        HTML element with v-ripple
-      </div>
-    </v-container>
-    <div class="text-center">
-      <div>
-        <v-btn
-          class="ma-2"
-          color="primary"
-          dark
-        >
-          Accept
-          <v-icon
-            dark
-            right
-          >
-            mdi-checkbox-marked-circle
-          </v-icon>
-        </v-btn>
-        <v-btn
-          class="ma-2"
-          color="red"
-          dark
-        >
-          Decline
-          <v-icon
-            dark
-            right
-          >
-            mdi-cancel
-          </v-icon>
-        </v-btn>
-        <v-btn
-          class="ma-2"
-          dark
-        >
-          <v-icon
-            dark
-            left
-          >
-            mdi-minus-circle
-          </v-icon>Cancel
-        </v-btn>
-      </div>
-    </div>
-    <div>
-      <input type="text" v-model="message" style="border: solid 1px"/>
-      <button @click="addMessage()">追加</button>
-      <ul>
-        <li v-for="(message,index) in messages" :key="index">{{ message.name }}</li>
-      </ul>
+        <v-card-item>
+          <div>
+            <div class="text-overline mb-1">
+              OVERLINE
+            </div>
+            <div class="text-h6 mb-1">
+              Headline
+            </div>
+            <div class="text-caption">Greyhound divisely hello coldly fonwderfully</div>
+          </div>
+        </v-card-item>
+
+        <v-card-actions>
+          <v-btn variant="outlined">
+            Button
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+      <v-card
+        class="card_list_item mx-auto"
+        max-width="344"
+        variant="outlined"
+      >
+        <v-card-item>
+          <div>
+            <div class="text-overline mb-1">
+              OVERLINE
+            </div>
+            <div class="text-h6 mb-1">
+              Headline
+            </div>
+            <div class="text-caption">Greyhound divisely hello coldly fonwderfully</div>
+          </div>
+        </v-card-item>
+
+        <v-card-actions>
+          <v-btn variant="outlined">
+            Button
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+      <v-card
+        class="card_list_item mx-auto"
+        max-width="344"
+        variant="outlined"
+      >
+        <v-card-item>
+          <div>
+            <div class="text-overline mb-1">
+              OVERLINE
+            </div>
+            <div class="text-h6 mb-1">
+              Headline
+            </div>
+            <div class="text-caption">Greyhound divisely hello coldly fonwderfully</div>
+          </div>
+        </v-card-item>
+
+        <v-card-actions>
+          <v-btn variant="outlined">
+            Button
+          </v-btn>
+        </v-card-actions>
+      </v-card>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 
-type Messages = {
-  name: string;
-};
-
 export default ({
   setup() {
-    const message = ref<string>('')
-    const messages = ref<Messages[]>([])
-
-    const addMessage = (): void => {
-      messages.value.push({
-        name: message.value,
-      });
-      message.value = '';
-    };
-
     return {
-      message,
-      messages,
-      addMessage
     }
   }
 })
 </script>
+
+<style lang="scss" scoped>
+  .parallax {
+    margin: 50px 150px;
+    height: 600px;
+  }
+  .card_list {
+    display: flex;
+    width: 1350px;
+    margin: 0 auto;
+    &_item {
+      padding: 20px 50px;
+    }
+  }
+</style>
