@@ -1,53 +1,89 @@
 <template>
   <div class="about">
     <NuxtLink :to="`/`">index.vue</NuxtLink>
-    <v-sheet width="300" class="mx-auto">
-      <v-text-field
-        v-model="state.form"
-        @focus="resetForm"
-        label="入力してね"
-      />
-      <v-btn @click="setText" block class="mt-2">Submit</v-btn>
-    </v-sheet>
-    <div
-    v-if="state.text"
-      class="about_text d-flex justify-center"
-    >
-      <v-card width="300px">
-        <v-card-text>
-          {{ state.text }}
-        </v-card-text>
-      </v-card>
+
+    <div class="search">
+      <input v-model="radius" type="text" class="radius">
+      <button @click="searchStore()">検索</button>
+    </div>
+
+    <div v-if="storeInfo" class="result">
+      <p>{{ getStoreName }} </p>
+      <img v-if="getStorePhotoUrl" :src="getStorePhotoUrl">
+      <p v-else>No Image</p>
+      <button @click="changeStore()">Next</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { reactive } from 'vue'
+// import { reactive } from 'vue'
 
 export default ({
-  setup() {
-    const state = reactive({
-      text: '',
-      form: ''
-    })
+  async setup() {
+    const runtimeConfig = useRuntimeConfig()
+    const apiKey = runtimeConfig.public.apiKey
+    const photoUrlFond = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400'
+    const radius = ref<string>('')
+    const storeIndex = ref<number>(0)
+    const storeArray = ref<string[]>([])
+    let storeInfo = reactive( {data: null} )
 
-    const setText = () => {
-      if (state.form === 'delete') {
-        state.text = ''
-      } else {
-        state.text = state.form
-      }
+    const searchStore = async () => {
+      const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
+      const params = new URLSearchParams({
+        key: apiKey,
+        location: '35.78928207428572, 139.4560333981599',
+        radius: '30',
+        type: 'store',
+        language: 'ja'
+      })
+      const res = await fetch(url + params.toString())
+      // CORS問題発生
+      console.log('res',res)
     }
 
-    const resetForm = () => {
-      state.form = ''
+    const { data: data } = await useFetch(
+      'https://maps.googleapis.com/maps/api/place/nearbysearch/json',
+      {
+        params: {
+          key: apiKey,
+          location: '35.78928207428572, 139.4560333981599',
+          radius: '30',
+          type: 'store',
+          language: 'ja'
+        }
+      }
+    )
+    storeArray.value = data.value.results
+    storeInfo.data = storeArray.value[storeIndex.value]
+
+    const getStorePhotoUrl = computed((): string => {
+      if (storeInfo.data.hasOwnProperty('photos')) {
+        const photoReference = storeInfo.data.photos[0].photo_reference
+
+        return photoUrlFond + '&photoreference=' + photoReference + '&key=' + apiKey
+      }
+
+      return ''
+    })
+
+    const getStoreName = computed((): string => {
+      return storeInfo.data.name
+    })
+
+    const changeStore = (): void => {
+      storeIndex.value = storeIndex.value + 1
+      storeInfo.data = storeArray.value[storeIndex.value]
     }
 
     return {
-      state,
-      setText,
-      resetForm,
+      getStoreName,
+      getStorePhotoUrl,
+      changeStore,
+      storeInfo,
+      radius,
+      searchStore
     }
   }
 })
@@ -56,8 +92,8 @@ export default ({
 <style lang="scss" scoped>
   .about {
     margin: 50px auto;
-    &_text {
-      margin-top: 50px;
-    }
+  }
+  .radius {
+    border: solid 1px;
   }
 </style>

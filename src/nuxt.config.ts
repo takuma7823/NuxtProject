@@ -14,4 +14,10 @@ export default defineNuxtConfig({
     }
   },
   buildModules: ['@nuxt/typescript-build'],
+  runtimeConfig: {
+    public: {
+      apiKey: '',
+      apiUrl: '',
+    }
+  },
 })
