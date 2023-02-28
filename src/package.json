@@ -9,7 +9,14 @@
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^2.1.0",
-    "nuxt": "^3.2.2"
+    "@nuxtjs/eslint-config-typescript": "^12.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
+    "eslint": "^8.35.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-nuxt": "^4.0.0",
+    "nuxt": "^3.2.2",
+    "prettier": "^2.8.4"
   },
   "dependencies": {
     "@nuxt/types": "^2.16.0",
