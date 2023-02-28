@@ -1,3 +1,6 @@
+<script setup lang="ts">
+</script>
+
 <template>
   <div>
     <NuxtLink :to="`/about`">about.vue</NuxtLink>
@@ -87,16 +90,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-
-export default ({
-  setup() {
-    return {
-    }
-  }
-})
-</script>
 
 <style lang="scss" scoped>
   .parallax {
