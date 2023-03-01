@@ -2,11 +2,13 @@
 import HomeHeader from '../components/organisms/HomeHeader.vue';
 import HomeFooter from '../components/organisms/HomeFooter.vue';
 import PostCard from '../components/organisms/PostCard.vue';
+
+const isOpenSearch = ref(false);
 </script>
 
 <template>
   <div>
-    <HomeHeader />
+    <HomeHeader @update:isOpenSearch="isOpenSearch = true" />
     <div class="home-body">
       <PostCard />
     </div>
