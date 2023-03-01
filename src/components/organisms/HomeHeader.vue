@@ -9,6 +9,12 @@ type HomeHeaderProps = {
 
 // MEMO propsを渡す時にコメントアウトを外す
 // defineProps<HomeHeaderProps>();
+
+const emits = defineEmits<{ (e: 'update:searchViewSituation'): void }>();
+
+const onClick = () => {
+  emits('update:searchViewSituation');
+};
 </script>
 
 <template>
@@ -24,7 +30,7 @@ type HomeHeaderProps = {
     </div>
 
     <div class="home-header__search">
-      <Search />
+      <Search @click="onClick" />
     </div>
   </div>
 </template>

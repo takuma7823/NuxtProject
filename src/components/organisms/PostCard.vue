@@ -17,10 +17,10 @@ type PostCardProps = {
 </script>
 
 <template>
-  <v-card class="mx-auto" max-width="600">
+  <v-card class="mx-auto" max-width="600" max-height="700">
     <v-card-title> カフェ国木田 </v-card-title>
     <v-card-subtitle> cafe kunikida </v-card-subtitle>
-    <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" height="600px" cover></v-img>
+    <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" height="400px" cover></v-img>
 
     <v-card-subtitle> 1,000 miles of wonder </v-card-subtitle>
     <v-card-subtitle> 1,000 miles of wonder </v-card-subtitle>
