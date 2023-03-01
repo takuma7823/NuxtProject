@@ -10,10 +10,10 @@ type HomeHeaderProps = {
 // MEMO propsを渡す時にコメントアウトを外す
 // defineProps<HomeHeaderProps>();
 
-const emits = defineEmits<{ (e: 'update:isOpenSearch'): void }>();
+const emits = defineEmits<{ (e: 'update:searchViewSituation'): void }>();
 
 const onClick = () => {
-  emits('update:isOpenSearch');
+  emits('update:searchViewSituation');
 };
 </script>
 
