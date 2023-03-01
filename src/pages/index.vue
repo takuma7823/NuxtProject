@@ -1,10 +1,7 @@
-<script setup lang="ts">
-import PostCard from '../components/organisms/post-card.vue';
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div>
-    <PostCard />
     <NuxtLink :to="`/about`">about.vue</NuxtLink>
     <v-parallax src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg" class="parallax">
       <div class="d-flex flex-column fill-height justify-center align-center text-white">
