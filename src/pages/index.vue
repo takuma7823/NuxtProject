@@ -1,7 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import HomeFooter from '../components/organisms/home-footer.vue';
+</script>
 
 <template>
   <div>
+    <HomeFooter />
     <NuxtLink :to="`/about`">about.vue</NuxtLink>
     <v-parallax src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg" class="parallax">
       <div class="d-flex flex-column fill-height justify-center align-center text-white">

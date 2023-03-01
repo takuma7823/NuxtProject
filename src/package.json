@@ -16,7 +16,8 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-nuxt": "^4.0.0",
     "nuxt": "^3.2.2",
-    "prettier": "^2.8.4"
+    "prettier": "^2.8.4",
+    "vite-svg-loader": "^4.0.0"
   },
   "dependencies": {
     "@nuxt/types": "^2.16.0",
