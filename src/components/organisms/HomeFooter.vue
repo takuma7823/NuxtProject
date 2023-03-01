@@ -6,14 +6,24 @@ import NoButton from '../../assets/svgs/NoButton.svg';
 
 <template>
   <div class="home-footer">
-    <NoButton />
-    <GoButton />
-    <FavoriteButton />
+    <div class="home-footer__button-bar">
+      <NoButton />
+      <GoButton />
+      <FavoriteButton />
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .home-footer {
-  height: 56px;
+  height: 74px;
+  width: 100svw;
+  padding: 0 36px;
+  &__button-bar {
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
 }
 </style>
