@@ -14,6 +14,15 @@ export default defineNuxtConfig({
         svgo: false,
       }),
     ],
+    server: {
+      proxy: {
+        "/api": {
+          target: 'https://maps.googleapis.com',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        }
+      }
+    }
   },
   buildModules: ['@nuxt/typescript-build'],
   runtimeConfig: {
