@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HomeFooter from '../components/organisms/home-footer.vue';
+import HomeFooter from '../components/organisms/HomeFooter.vue';
 </script>
 
 <template>
