@@ -1,15 +1,15 @@
 <script setup lang="ts">
 // interface PostCardProps {
-  // logo: string;
-  // storeName: string;
-  // storeNameKana: string;
-  // photos: string[];
-  // distance: string;
-  // openTime: string;
-  // closeTime: string;
-  // minPrice: string;
-  // maxPrice: string;
-  // discription: Text;
+// logo: string;
+// storeName: string;
+// storeNameKana: string;
+// photos: string[];
+// distance: string;
+// openTime: string;
+// closeTime: string;
+// minPrice: string;
+// maxPrice: string;
+// discription: Text;
 // };
 // import { defineProps } from 'vue';
 
@@ -21,16 +21,10 @@
 // });
 
 // console.log('props',props.photos);
-import { defineProps } from 'vue'
 
-const props = defineProps({
-  prop: {
-    type: String,
-    required: true
-  },
-})
+const props = defineProps<{ photos: any[] }>();
 
-console.log('props',props.prop)
+console.log('props', props.photos);
 </script>
 
 <template>
