@@ -1,19 +1,36 @@
 <script setup lang="ts">
-type PostCardProps = {
-  logo: string;
-  storeName: string;
-  storeNameKana: string;
-  Images: string[];
-  distance: string;
-  openTime: string;
-  closeTime: string;
-  minPrice: string;
-  maxPrice: string;
-  discription: Text;
-};
+// interface PostCardProps {
+  // logo: string;
+  // storeName: string;
+  // storeNameKana: string;
+  // photos: string[];
+  // distance: string;
+  // openTime: string;
+  // closeTime: string;
+  // minPrice: string;
+  // maxPrice: string;
+  // discription: Text;
+// };
+// import { defineProps } from 'vue';
 
-// MEMO propsを渡すときにコメントアウト外す
-// defineProps<PostCardProps>();
+// const props = defineProps({
+//   photos: {
+//     type: Array,
+//     default: [],
+//   },
+// });
+
+// console.log('props',props.photos);
+import { defineProps } from 'vue'
+
+const props = defineProps({
+  prop: {
+    type: String,
+    required: true
+  },
+})
+
+console.log('props',props.prop)
 </script>
 
 <template>

@@ -6,7 +6,6 @@
   const storeIndex = ref<number>(0);
   const storeArray = ref<string[]>([]);
   const storeDetailsArray = ref<string[]>([]);
-  let storeInfo = reactive({ data: null });
 
   const { data: data } = await useFetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
     params: {
@@ -30,15 +29,17 @@
     });
     storeDetailsArray.value.push(data);
   }));
+  console.log('photos',storeDetailsArray.value[storeIndex.value].value.result.photos)
 
-  console.log('storeDetailsArray.value',storeDetailsArray.value);
 </script>
 
 <template>
   <div>
     <OrganismsHomeHeader />
     <div class="home-body">
-      <OrganismsPostCard />
+      <OrganismsPostCard
+        :prop="'takuma'"
+      />
     </div>
     <OrganismsHomeFooter />
   </div>
