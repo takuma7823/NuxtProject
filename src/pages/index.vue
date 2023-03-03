@@ -78,23 +78,10 @@ const clickFavorite = (): void => {
   console.log('お気に入り')
   changeStore();
 };
-
-const swipeRight = (): void => {
-  console.log('右スワイプ')
-};
-const swipeLeft = (): void => {
-  console.log('左スワイプ')
-};
 </script>
 
 <template>
-  <div
-    class="home"
-    v-touch="{
-      right: swipeRight,
-      left: swipeLeft
-    }"
-  >
+  <div class="home">
     <OrganismsHomeHeader @update:searchViewSituation="openSearchView" />
     <div class="home-body">
       <OrganismsPostCard
