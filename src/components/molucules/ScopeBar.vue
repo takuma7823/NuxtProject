@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useEventListener } from '@vueuse/core';
 
-const inputLeftProperty = ref({ min: 0, max: 100, value: 25 });
-const inputRightProperty = ref({ min: 0, max: 100, value: 75 });
-const thumbLeftStyleObject = ref();
-const thumbRightStyleObject = ref();
-const rangeStyleObject = ref();
+const inputLeftProperty = ref({ min: 0, max: 100, value: 0 });
+const inputRightProperty = ref({ min: 0, max: 100, value: 100 });
+const thumbLeftStyleObject = ref({ left: '0%' });
+const thumbRightStyleObject = ref({ right: '0%' });
+const rangeStyleObject = ref({ left: '0%', right: '0%' });
 
 const inputLeft = ref(null);
 const inputRight = ref(null);
@@ -16,13 +16,16 @@ const range = ref(null);
 onMounted(() => {
   const setLeftValue = () => {
     if (inputLeft.value && thumbLeft.value && inputRight.value && range.value) {
+      console.log(inputLeftProperty.value);
       inputLeftProperty.value.value = Math.min(inputLeftProperty.value.value, inputRightProperty.value.value - 1);
       const percent =
         ((inputLeftProperty.value.value - inputLeftProperty.value.min) /
           (inputLeftProperty.value.max - inputLeftProperty.value.min)) *
         100;
-      thumbLeftStyleObject.value = { left: `${percent}'%'` };
-      rangeStyleObject.value = { left: `${percent}'%'` };
+      thumbLeftStyleObject.value.left = `${percent}%`;
+      rangeStyleObject.value.left = `${percent}%`;
+      console.log(thumbLeftStyleObject.value);
+      console.log(rangeStyleObject.value);
     }
   };
   setLeftValue();
@@ -30,14 +33,15 @@ onMounted(() => {
   const setRightValue = () => {
     if (inputLeft.value && thumbLeft.value && inputRight.value && range.value) {
       inputRightProperty.value.value = Math.max(inputRightProperty.value.value, inputLeftProperty.value.value + 1);
-
       const percent =
-        ((inputRightProperty.value.value - inputRightProperty.value.min) /
+        ((inputRightProperty.value.max - inputRightProperty.value.value) /
           (inputRightProperty.value.max - inputRightProperty.value.min)) *
         100;
 
-      thumbRightStyleObject.value = { right: `${percent}'%'` };
-      rangeStyleObject.value = { right: `${percent}'%'` };
+      thumbRightStyleObject.value.right = `${percent}%`;
+      rangeStyleObject.value.right = `${percent}%`;
+      console.log(thumbRightStyleObject.value);
+      console.log(rangeStyleObject.value);
     }
   };
   setRightValue();
@@ -85,6 +89,7 @@ onMounted(() => {
         :min="inputLeftProperty.min"
         :max="inputLeftProperty.max"
         :value="inputLeftProperty.value"
+        @input="inputLeftProperty.value = $event.target.value"
       />
       <input
         ref="inputRight"
@@ -93,6 +98,7 @@ onMounted(() => {
         :min="inputRightProperty.min"
         :max="inputRightProperty.max"
         :value="inputRightProperty.value"
+        @input="inputRightProperty.value = $event.target.value"
       />
 
       <div class="slider">
