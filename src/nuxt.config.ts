@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ['vuetify'],
   },
+  modules: ['@vueuse/nuxt'],
   vite: {
     define: {
       'process.env.DEBUG': false,
@@ -16,13 +17,13 @@ export default defineNuxtConfig({
     ],
     server: {
       proxy: {
-        "/api": {
+        '/api': {
           target: 'https://maps.googleapis.com',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
-        }
-      }
-    }
+        },
+      },
+    },
   },
   buildModules: ['@nuxt/typescript-build'],
   runtimeConfig: {
