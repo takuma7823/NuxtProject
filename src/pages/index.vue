@@ -6,6 +6,7 @@ const storeIndex = ref<number>(0);
 const storeArray = ref<string[]>([]);
 const storeDetailsArray = ref<string[]>([]);
 
+
 // MEMO hookで切り出しても良いとは思っている。
 const searchViewSituation = ref<'open' | 'close' | 'default'>('default');
 const openSearchView = () => {
