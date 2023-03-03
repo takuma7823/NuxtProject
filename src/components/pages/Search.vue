@@ -10,6 +10,7 @@ const onClick = () => {
   <div>
     <div @click="onClick">閉じる</div>
     <div class="search">検索画面</div>
+    <AtomsSwitch />
     <MoluculesButtonBar />
   </div>
 </template>
