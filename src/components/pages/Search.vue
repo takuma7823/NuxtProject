@@ -8,8 +8,7 @@ const onClick = () => {
 
 <template>
   <div>
-    <div @click="onClick">閉じる</div>
-    <div class="search">検索画面</div>
+    <MoluculesSearchHeader @click="onClick" />
     <AtomsSwitch />
     <MoluculesButtonBar />
   </div>
