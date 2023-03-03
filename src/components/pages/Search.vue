@@ -8,13 +8,21 @@ const onClick = () => {
 
 <template>
   <div>
-    <div @click="onClick">閉じる</div>
-    <div class="search">検索画面</div>
+    <MoluculesSearchHeader @click="onClick" />
+
+    <div class="search-body">
+      <div class="search-body__section">
+        <div class="search-body__section-title">エリア</div>
+        <div class="search-body__section-row">
+          <div>現在地から検索</div>
+          <MoluculesButtonBar />
+        </div>
+      </div>
+      <div class="section"></div>
+      <div class="section"></div>
+      <AtomsSwitch />
+    </div>
   </div>
 </template>
 
-<style lang="scss" scoped>
-.search {
-  background-color: white;
-}
-</style>
+<style lang="scss" scoped></style>

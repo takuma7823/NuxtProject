@@ -15,8 +15,8 @@ const status = ref(false);
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 40px;
+  height: 24px;
 }
 
 .switch input {
@@ -30,7 +30,7 @@ const status = ref(false);
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #6b6b6b;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -38,27 +38,27 @@ const status = ref(false);
 .slider:before {
   position: absolute;
   content: '';
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 2px;
   background-color: white;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #101010;
+  background-color: #f1bf06;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #101010;
+  box-shadow: 0 0 1px #f1bf06;
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+  -webkit-transform: translateX(16px);
+  -ms-transform: translateX(16px);
+  transform: translateX(16px);
 }
 
 .slider.round {
