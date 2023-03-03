@@ -47,6 +47,7 @@ const photos = computed(() => {
     return [];
   }
 });
+
 </script>
 
 <template>

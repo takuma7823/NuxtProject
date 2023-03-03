@@ -15,7 +15,7 @@ const runtimeConfig = useRuntimeConfig();
 const apiKey = runtimeConfig.public.apiKey;
 const photoUrlFond = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400';
 const imgEl = ref(null)
-
+const photoIndex = ref<number>(0);
 
 const props = defineProps<{
   storeInfo: Object,
@@ -27,20 +27,21 @@ const getStoreName = computed((): string => {
 });
 
 const getStorePhotoUrl = computed((): string => {
-  const photoReference = props.photos[0].photo_reference;
+  const photoReference = props.photos[photoIndex.value].photo_reference;
   return photoUrlFond + '&photoreference=' + photoReference + '&key=' + apiKey;
 });
 
-const changeStore = (event): void => {
+const changePhoto = (event): void => {
   const touchX = event.changedTouches[0].clientX;
   const imageEl = imgEl.value?.$el;
   const imageWidth = imageEl.clientWidth;
   const imageCenter = imageWidth / 2;
+  const photoLength = props.photos.length - 1;
 
-  if (touchX > imageCenter) {
-    console.log('右側がタッチされました');
-  } else {
-    console.log('左側がタッチされました');
+  if (touchX > imageCenter && photoLength > photoIndex.value) {
+    photoIndex.value = photoIndex.value + 1;
+  } else if (touchX < imageCenter && photoIndex.value > 0) {
+    photoIndex.value = photoIndex.value - 1;
   }
 }
 </script>
@@ -52,7 +53,7 @@ const changeStore = (event): void => {
     <v-img
       ref="imgEl"
       :src="getStorePhotoUrl"
-      @touchstart="changeStore"
+      @touchstart="changePhoto"
       height="600px" cover
     />
 
