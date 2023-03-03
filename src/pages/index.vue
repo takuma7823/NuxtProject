@@ -60,7 +60,7 @@ const changeStore = (): void => {
 
 <template>
   <div class="home">
-    <HomeHeader @update:searchViewSituation="openSearchView" />
+    <OrganismsHomeHeader @update:searchViewSituation="openSearchView" />
     <div class="home-body">
       <OrganismsPostCard
         :storeInfo="storeInfo"
