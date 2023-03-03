@@ -2,6 +2,7 @@
 import HomeHeader from '../components/organisms/HomeHeader.vue';
 import HomeFooter from '../components/organisms/HomeFooter.vue';
 import PostCard from '../components/organisms/PostCard.vue';
+import Slider from '../components/molucules/Slider.vue';
 
 // MEMO hookで切り出しても良いとは思っている。
 const searchViewSituation = ref<'open' | 'close' | 'default'>('default');
@@ -26,6 +27,7 @@ const closeSearchView = () => {
   </div>
   <div class="search" :class="searchViewSituation">
     <PagesSearch @update:searchViewSituation="closeSearchView" />
+    <Slider />
   </div>
 </template>
 
