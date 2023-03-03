@@ -1,73 +1,75 @@
 <script setup lang="ts">
+import { useEventListener } from '@vueuse/core';
+
 const inputLeftProperty = ref({ min: 0, max: 100, value: 25 });
 const inputRightProperty = ref({ min: 0, max: 100, value: 75 });
 const thumbLeftStyleObject = ref();
+const thumbRightStyleObject = ref();
 const rangeStyleObject = ref();
 
-onMounted(() => {
-  const inputLeft = document.getElementById('input-left');
-  const inputRight = document.getElementById('input-right');
-  const thumbLeft = document.querySelector('.slider > .thumb.left');
-  const thumbRight = document.querySelector('.slider > .thumb.right');
-  const range = document.querySelector('.slider > .range');
+const inputLeft = ref(null);
+const inputRight = ref(null);
+const thumbLeft = ref(null);
+const thumbRight = ref(null);
+const range = ref(null);
 
-  function setLeftValue() {
-    if (inputLeft && thumbLeft && inputRight && range) {
+onMounted(() => {
+  const setLeftValue = () => {
+    if (inputLeft.value && thumbLeft.value && inputRight.value && range.value) {
       inputLeftProperty.value.value = Math.min(inputLeftProperty.value.value, inputRightProperty.value.value - 1);
       const percent =
         ((inputLeftProperty.value.value - inputLeftProperty.value.min) /
           (inputLeftProperty.value.max - inputLeftProperty.value.min)) *
         100;
-
       thumbLeftStyleObject.value = { left: `${percent}'%'` };
       rangeStyleObject.value = { left: `${percent}'%'` };
     }
-  }
+  };
   setLeftValue();
 
-  // function setRightValue() {
-  //   let _this = inputRight;
-  //   if (inputLeft && thumbRight && inputRight && range) {
-  //     (min = parseInt(_this.min)), (max = parseInt(_this.max));
+  const setRightValue = () => {
+    if (inputLeft.value && thumbLeft.value && inputRight.value && range.value) {
+      inputRightProperty.value.value = Math.max(inputRightProperty.value.value, inputLeftProperty.value.value + 1);
 
-  //     _this.value = Math.max(parseInt(_this.value), parseInt(inputLeft.value) + 1);
+      const percent =
+        ((inputRightProperty.value.value - inputRightProperty.value.min) /
+          (inputRightProperty.value.max - inputRightProperty.value.min)) *
+        100;
 
-  //     let percent = ((_this.value - min) / (max - min)) * 100;
-
-  //     thumbRight.style.right = 100 - percent + '%';
-  //     range.style.right = 100 - percent + '%';
-  //   }
-  // }
-  // setRightValue();
+      thumbRightStyleObject.value = { right: `${percent}'%'` };
+      rangeStyleObject.value = { right: `${percent}'%'` };
+    }
+  };
+  setRightValue();
 
   if (inputLeft && inputRight && thumbLeft && thumbRight) {
-    inputLeft.addEventListener('input', setLeftValue);
-    //   inputRight.addEventListener('input', setRightValue);
+    useEventListener(inputLeft.value, 'input', setLeftValue);
+    useEventListener(inputRight.value, 'input', setRightValue);
 
-    inputLeft.addEventListener('mouseover', function () {
-      thumbLeft.classList.add('hover');
+    useEventListener(inputLeft.value, 'mouseover', function () {
+      thumbLeft.value.classList.add('hover');
     });
-    inputLeft.addEventListener('mouseout', function () {
-      thumbLeft.classList.remove('hover');
+    useEventListener(inputLeft.value, 'mouseout', function () {
+      thumbLeft.value.classList.remove('hover');
     });
-    inputLeft.addEventListener('mousedown', function () {
-      thumbLeft.classList.add('active');
+    useEventListener(inputLeft.value, 'mousedown', function () {
+      thumbLeft.value.classList.add('active');
     });
-    inputLeft.addEventListener('mouseup', function () {
-      thumbLeft.classList.remove('active');
+    useEventListener(inputLeft.value, 'mouseup', function () {
+      thumbLeft.value.classList.remove('active');
     });
 
-    inputRight.addEventListener('mouseover', function () {
-      thumbRight.classList.add('hover');
+    useEventListener(inputRight.value, 'mouseover', function () {
+      thumbRight.value.classList.add('hover');
     });
-    inputRight.addEventListener('mouseout', function () {
-      thumbRight.classList.remove('hover');
+    useEventListener(inputRight.value, 'mouseout', function () {
+      thumbRight.value.classList.remove('hover');
     });
-    inputRight.addEventListener('mousedown', function () {
-      thumbRight.classList.add('active');
+    useEventListener(inputRight.value, 'mousedown', function () {
+      thumbRight.value.classList.add('active');
     });
-    inputRight.addEventListener('mouseup', function () {
-      thumbRight.classList.remove('active');
+    useEventListener(inputRight.value, 'mouseup', function () {
+      thumbRight.value.classList.remove('active');
     });
   }
 });
@@ -77,6 +79,7 @@ onMounted(() => {
   <div class="middle">
     <div class="multi-range-slider">
       <input
+        ref="inputLeft"
         type="range"
         id="input-left"
         :min="inputLeftProperty.min"
@@ -84,6 +87,7 @@ onMounted(() => {
         :value="inputLeftProperty.value"
       />
       <input
+        ref="inputRight"
         type="range"
         id="input-right"
         :min="inputRightProperty.min"
@@ -93,9 +97,9 @@ onMounted(() => {
 
       <div class="slider">
         <div class="track"></div>
-        <div class="range" :style="rangeStyleObject"></div>
-        <div class="thumb left" :style="thumbLeftStyleObject"></div>
-        <div class="thumb right"></div>
+        <div ref="range" class="range" :style="rangeStyleObject"></div>
+        <div ref="thumbLeft" class="thumb left" :style="thumbLeftStyleObject"></div>
+        <div ref="thumbRight" class="thumb right" :style="thumbRightStyleObject"></div>
       </div>
     </div>
   </div>
@@ -176,14 +180,5 @@ input[type='range']::-webkit-slider-thumb {
   border: 0 none;
   background-color: red;
   -webkit-appearance: none;
-}
-
-.youtube-link {
-  position: fixed;
-  left: 20px;
-  bottom: 20px;
-  color: #000;
-  text-decoration: none;
-  font-size: 12px;
 }
 </style>
