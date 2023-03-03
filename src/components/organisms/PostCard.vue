@@ -11,27 +11,50 @@
 // maxPrice: string;
 // discription: Text;
 // };
-// import { defineProps } from 'vue';
+const runtimeConfig = useRuntimeConfig();
+const apiKey = runtimeConfig.public.apiKey;
+const photoUrlFond = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400';
+const imgEl = ref(null)
 
-// const props = defineProps({
-//   photos: {
-//     type: Array,
-//     default: [],
-//   },
-// });
 
-// console.log('props',props.photos);
+const props = defineProps<{
+  storeInfo: Object,
+  photos: any[]
+}>();
 
-const props = defineProps<{ photos: any[] }>();
+const getStoreName = computed((): string => {
+  return props.storeInfo.name;
+});
 
-console.log('props', props.photos);
+const getStorePhotoUrl = computed((): string => {
+  const photoReference = props.photos[0].photo_reference;
+  return photoUrlFond + '&photoreference=' + photoReference + '&key=' + apiKey;
+});
+
+const changeStore = (event): void => {
+  const touchX = event.changedTouches[0].clientX;
+  const imageEl = imgEl.value?.$el;
+  const imageWidth = imageEl.clientWidth;
+  const imageCenter = imageWidth / 2;
+
+  if (touchX > imageCenter) {
+    console.log('右側がタッチされました');
+  } else {
+    console.log('左側がタッチされました');
+  }
+}
 </script>
 
 <template>
   <v-card class="mx-auto" max-width="600">
-    <v-card-title> カフェ国木田 </v-card-title>
-    <v-card-subtitle> cafe kunikida </v-card-subtitle>
-    <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" height="600px" cover></v-img>
+    <v-card-title>{{ getStoreName }}</v-card-title>
+    <v-card-subtitle> sub title </v-card-subtitle>
+    <v-img
+      ref="imgEl"
+      :src="getStorePhotoUrl"
+      @touchstart="changeStore"
+      height="600px" cover
+    />
 
     <v-card-subtitle> 1,000 miles of wonder </v-card-subtitle>
     <v-card-subtitle> 1,000 miles of wonder </v-card-subtitle>

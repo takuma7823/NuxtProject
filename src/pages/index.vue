@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const runtimeConfig = useRuntimeConfig();
 const apiKey = runtimeConfig.public.apiKey;
-// const photoUrlFond = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400';
 // const radius = ref<string>('');
 const storeIndex = ref<number>(0);
 const storeArray = ref<string[]>([]);
@@ -31,7 +30,14 @@ await Promise.all(
     storeDetailsArray.value.push(data);
   })
 );
-console.log('photos', storeDetailsArray.value[storeIndex.value].value.result.photos);
+
+const storeInfo = computed(() => {
+  if (storeArray.value[storeIndex.value]) {
+    return storeArray.value[storeIndex.value];
+  } else {
+    return [];
+  }
+});
 
 const photos = computed(() => {
   if (storeDetailsArray.value[storeIndex.value].value.result.photos) {
@@ -47,7 +53,10 @@ const photos = computed(() => {
   <div>
     <OrganismsHomeHeader />
     <div class="home-body">
-      <OrganismsPostCard :photos="photos" />
+      <OrganismsPostCard
+        :storeInfo="storeInfo"
+        :photos="photos"
+      />
     </div>
     <OrganismsHomeFooter />
   </div>
