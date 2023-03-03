@@ -6,6 +6,18 @@ const storeIndex = ref<number>(0);
 const storeArray = ref<string[]>([]);
 const storeDetailsArray = ref<string[]>([]);
 
+// MEMO hookで切り出しても良いとは思っている。
+const searchViewSituation = ref<'open' | 'close' | 'default'>('default');
+const openSearchView = () => {
+  searchViewSituation.value = 'open';
+};
+const closeSearchView = () => {
+  searchViewSituation.value = 'close';
+  setTimeout(() => {
+    searchViewSituation.value = 'default';
+  }, 200);
+};
+
 const { data: data } = await useFetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
   params: {
     key: apiKey,
