@@ -3,10 +3,17 @@ import FavoriteButton from '../../assets/svgs/FavoriteButton.svg';
 import GoButton from '../../assets/svgs/GoButton.svg';
 import NoButton from '../../assets/svgs/NoButton.svg';
 
-const emits = defineEmits(['change-store']);
+const emits = defineEmits([
+  'click-no',
+  'click-favorite'
+]);
 
-const changeStore = (): void => {
-  emits('change-store');
+const clickNo = (): void => {
+  emits('click-no');
+}
+
+const clickFavorite = (): void => {
+  emits('click-favorite');
 }
 </script>
 
@@ -14,11 +21,11 @@ const changeStore = (): void => {
   <div class="home-footer">
     <div class="home-footer__button-bar">
       <NoButton
-        @click="changeStore()"
+        @click="clickNo()"
       />
       <GoButton />
       <FavoriteButton
-        @click="changeStore()"
+        @click="clickFavorite()"
       />
     </div>
   </div>

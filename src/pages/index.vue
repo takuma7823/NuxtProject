@@ -69,6 +69,16 @@ const changeStore = (): void => {
   }
 };
 
+const clickNo = (): void => {
+  console.log('No');
+  changeStore();
+};
+
+const clickFavorite = (): void => {
+  console.log('お気に入り')
+  changeStore();
+};
+
 const swipeRight = (): void => {
   console.log('右スワイプ')
 };
@@ -93,7 +103,8 @@ const swipeLeft = (): void => {
       />
     </div>
     <OrganismsHomeFooter
-      @change-store="changeStore"
+      @click-no="clickNo"
+      @click-favorite="clickFavorite"
     />
   </div>
   <div class="search" :class="searchViewSituation">
