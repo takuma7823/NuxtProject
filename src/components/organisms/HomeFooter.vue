@@ -2,14 +2,24 @@
 import FavoriteButton from '../../assets/svgs/FavoriteButton.svg';
 import GoButton from '../../assets/svgs/GoButton.svg';
 import NoButton from '../../assets/svgs/NoButton.svg';
+
+const emits = defineEmits(['change-store']);
+
+const changeStore = (): void => {
+  emits('change-store');
+}
 </script>
 
 <template>
   <div class="home-footer">
     <div class="home-footer__button-bar">
-      <NoButton />
+      <NoButton
+        @click="changeStore()"
+      />
       <GoButton />
-      <FavoriteButton />
+      <FavoriteButton
+        @click="changeStore()"
+      />
     </div>
   </div>
 </template>

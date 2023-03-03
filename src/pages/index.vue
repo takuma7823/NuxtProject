@@ -48,6 +48,15 @@ const photos = computed(() => {
   }
 });
 
+const changeStore = (): void => {
+  const storeLength = storeArray.value.length - 1;
+
+  if (storeLength > storeIndex.value) {
+    storeIndex.value = storeIndex.value + 1;
+    storeInfo.data = storeArray.value[storeIndex.value];
+  }
+};
+
 </script>
 
 <template>
@@ -59,7 +68,9 @@ const photos = computed(() => {
         :photos="photos"
       />
     </div>
-    <OrganismsHomeFooter />
+    <OrganismsHomeFooter
+      @change-store="changeStore"
+    />
   </div>
 </template>
 
