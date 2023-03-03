@@ -68,10 +68,23 @@ const changeStore = (): void => {
     storeInfo.data = storeArray.value[storeIndex.value];
   }
 };
+
+const swipeRight = (): void => {
+  console.log('右スワイプ')
+};
+const swipeLeft = (): void => {
+  console.log('左スワイプ')
+};
 </script>
 
 <template>
-  <div class="home">
+  <div
+    class="home"
+    v-touch="{
+      right: swipeRight,
+      left: swipeLeft
+    }"
+  >
     <OrganismsHomeHeader @update:searchViewSituation="openSearchView" />
     <div class="home-body">
       <OrganismsPostCard
