@@ -24,8 +24,6 @@ onMounted(() => {
         100;
       thumbLeftStyleObject.value.left = `${percent}%`;
       rangeStyleObject.value.left = `${percent}%`;
-      console.log(thumbLeftStyleObject.value);
-      console.log(rangeStyleObject.value);
     }
   };
   setLeftValue();
@@ -40,8 +38,6 @@ onMounted(() => {
 
       thumbRightStyleObject.value.right = `${percent}%`;
       rangeStyleObject.value.right = `${percent}%`;
-      console.log(thumbRightStyleObject.value);
-      console.log(rangeStyleObject.value);
     }
   };
   setRightValue();

@@ -28,7 +28,6 @@ const closeSearchView = () => {
   <div class="search" :class="searchViewSituation">
     <PagesSearch @update:searchViewSituation="closeSearchView" />
   </div>
-  <ScopeBar />
 </template>
 
 <style lang="scss" scoped>
