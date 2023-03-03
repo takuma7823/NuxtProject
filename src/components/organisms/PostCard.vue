@@ -1,26 +1,61 @@
 <script setup lang="ts">
-type PostCardProps = {
-  logo: string;
-  storeName: string;
-  storeNameKana: string;
-  Images: string[];
-  distance: string;
-  openTime: string;
-  closeTime: string;
-  minPrice: string;
-  maxPrice: string;
-  discription: Text;
-};
+// interface PostCardProps {
+// logo: string;
+// storeName: string;
+// storeNameKana: string;
+// photos: string[];
+// distance: string;
+// openTime: string;
+// closeTime: string;
+// minPrice: string;
+// maxPrice: string;
+// discription: Text;
+// };
+const runtimeConfig = useRuntimeConfig();
+const apiKey = runtimeConfig.public.apiKey;
+const photoUrlFond = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400';
+const imgEl = ref(null)
+const photoIndex = ref<number>(0);
 
-// MEMO propsを渡すときにコメントアウト外す
-// defineProps<PostCardProps>();
+const props = defineProps<{
+  storeInfo: Object,
+  photos: any[]
+}>();
+
+const getStoreName = computed((): string => {
+  return props.storeInfo.name;
+});
+
+const getStorePhotoUrl = computed((): string => {
+  const photoReference = props.photos[photoIndex.value].photo_reference;
+  return photoUrlFond + '&photoreference=' + photoReference + '&key=' + apiKey;
+});
+
+const changePhoto = (event): void => {
+  const touchX = event.changedTouches[0].clientX;
+  const imageEl = imgEl.value?.$el;
+  const imageWidth = imageEl.clientWidth;
+  const imageCenter = imageWidth / 2;
+  const photoLength = props.photos.length - 1;
+
+  if (touchX > imageCenter && photoLength > photoIndex.value) {
+    photoIndex.value = photoIndex.value + 1;
+  } else if (touchX < imageCenter && photoIndex.value > 0) {
+    photoIndex.value = photoIndex.value - 1;
+  }
+}
 </script>
 
 <template>
-  <v-card class="mx-auto" max-width="600" max-height="700">
-    <v-card-title> カフェ国木田 </v-card-title>
-    <v-card-subtitle> cafe kunikida </v-card-subtitle>
-    <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" height="400px" cover></v-img>
+  <v-card class="mx-auto" max-width="600">
+    <v-card-title>{{ getStoreName }}</v-card-title>
+    <v-card-subtitle> sub title </v-card-subtitle>
+    <v-img
+      ref="imgEl"
+      :src="getStorePhotoUrl"
+      @touchstart="changePhoto"
+      height="600px" cover
+    />
 
     <v-card-subtitle> 1,000 miles of wonder </v-card-subtitle>
     <v-card-subtitle> 1,000 miles of wonder </v-card-subtitle>
