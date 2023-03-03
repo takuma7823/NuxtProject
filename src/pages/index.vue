@@ -2,7 +2,6 @@
 import HomeHeader from '../components/organisms/HomeHeader.vue';
 import HomeFooter from '../components/organisms/HomeFooter.vue';
 import PostCard from '../components/organisms/PostCard.vue';
-import ScopeBar from '../components/molucules/ScopeBar.vue';
 
 // MEMO hookで切り出しても良いとは思っている。
 const searchViewSituation = ref<'open' | 'close' | 'default'>('default');
