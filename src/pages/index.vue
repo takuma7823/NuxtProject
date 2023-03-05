@@ -6,7 +6,6 @@ const storeIndex = ref<number>(0);
 const storeArray = ref<string[]>([]);
 const storeDetailsArray = ref<string[]>([]);
 
-
 // MEMO hookで切り出しても良いとは思っている。
 const searchViewSituation = ref<'open' | 'close' | 'default'>('default');
 const openSearchView = () => {
@@ -23,7 +22,7 @@ const { data: data } = await useFetch('https://maps.googleapis.com/maps/api/plac
   params: {
     key: apiKey,
     location: '35.78928207428572, 139.4560333981599',
-    radius: '30',
+    radius: '50',
     type: 'store',
     language: 'ja',
   },
@@ -88,22 +87,33 @@ const clickFavorite = (): void => {
       <OrganismsPostCard
         :storeInfo="storeInfo"
         :photos="photos"
+        class="postcard"
       />
     </div>
     <OrganismsHomeFooter
       @click-no="clickNo"
       @click-favorite="clickFavorite"
+      class="home-footer"
     />
-  </div>
-  <div class="search" :class="searchViewSituation">
+    <div class="search" :class="searchViewSituation">
     <PagesSearch @update:searchViewSituation="closeSearchView" />
+  </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.postcard {
+  margin: 8vw 2vw 0;
+}
+
 .home {
   height: 100svh;
   width: 100svw;
+  background-color: #f5f5f5;
+}
+
+.home-footer {
+  margin-top: 12vw;
 }
 
 .search {
