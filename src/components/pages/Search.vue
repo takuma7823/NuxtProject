@@ -5,6 +5,8 @@ const emits = defineEmits<{ (e: 'update:searchViewSituation'): void }>();
 const onClick = () => {
   emits('update:searchViewSituation');
 };
+
+const isCurrentLocation = ref(true);
 </script>
 
 <template>
@@ -16,23 +18,23 @@ const onClick = () => {
       <div class="search-body__section">
         <div class="search-body__section-title">エリア</div>
         <div class="search-body__section-contents">
-          <div>
+          <div class="search-body__section-row-wrapper">
             <div class="search-body__section-row">
-              <div>現在地から検索</div>
+              <div class="center">現在地から検索</div>
               <AtomsSwitch />
             </div>
           </div>
-          <div>
+          <div class="search-body__section-row-wrapper" :class="{ dark: isCurrentLocation }">
             <div class="search-body__section-row">
-              <div class="serch-body__section-row__left">住所から検索</div>
+              <div class="center">住所から検索</div>
               <AtomsSwitch />
             </div>
             <div class="search-body__section-row">
-              <div class="serch-body__section-row__left">駅名検索</div>
+              <div>駅名検索</div>
               <div>未選択</div>
             </div>
             <div class="search-body__section-row">
-              <div class="serch-body__section-row__left">住所入力</div>
+              <div>住所入力</div>
               <div>未入力</div>
             </div>
           </div>
@@ -42,13 +44,11 @@ const onClick = () => {
       <!-- 距離 -->
       <div class="search-body__section">
         <div class="search-body__section-title">距離</div>
-        <div>
+        <div class="search-body__section-row-wrapper gap-24">
           <div class="search-body__section-row">
             <div>住所から</div>
             <div>300m以内</div>
           </div>
-        </div>
-        <div>
           <div class="search-body__section-row">
             <MoluculesSlider />
           </div>
@@ -58,12 +58,10 @@ const onClick = () => {
       <!-- 価格帯 -->
       <div class="search-body__section">
         <div class="search-body__section-title">価格帯</div>
-        <div>
+        <div class="search-body__section-row-wrapper gap-24">
           <div class="search-body__section-row end">
             <div>¥1000 ~ 2000</div>
           </div>
-        </div>
-        <div>
           <div class="search-body__section-row">
             <MoluculesScopeBar />
           </div>
@@ -73,7 +71,7 @@ const onClick = () => {
       <!-- ジャンル -->
       <div class="search-body__section">
         <div class="search-body__section-title">ジャンル</div>
-        <div>
+        <div class="search-body__section-row-wrapper">
           <div class="search-body__section-row genres">
             <template v-for="genre in googleMapGenres">
               <AtomsTip :genre="genre" />
@@ -91,11 +89,12 @@ const onClick = () => {
   width: 100svw;
 
   &__section {
-    padding: 24px;
+    padding: 16px 0;
     display: flex;
     flex-direction: column;
     gap: 20px 0px;
     &-title {
+      padding: 0 24px;
       font-family: 'Roboto';
       font-style: normal;
       font-weight: 700;
@@ -103,6 +102,12 @@ const onClick = () => {
       line-height: 16px;
       display: flex;
       align-items: center;
+    }
+    &-row-wrapper {
+      padding: 12px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px 0px;
     }
     &-row {
       display: flex;
@@ -121,6 +126,12 @@ const onClick = () => {
     }
   }
 
+  .dark {
+    background: rgba(217, 217, 217, 0.6);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
   .end {
     justify-content: end;
   }
@@ -129,6 +140,16 @@ const onClick = () => {
     flex-wrap: wrap;
     justify-content: flex-start;
     gap: 6px;
+  }
+
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .gap-24 {
+    gap: 24px 0px;
   }
 }
 </style>

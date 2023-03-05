@@ -9,6 +9,6 @@
 .button-bar {
   display: flex;
   justify-content: space-between;
-  padding: 88px 42px;
+  padding: 42px;
 }
 </style>
