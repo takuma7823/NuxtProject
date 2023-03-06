@@ -1,12 +1,42 @@
 <script setup lang="ts">
 import { googleMapGenres } from '~~/constants/googleMap/genres';
-const emits = defineEmits<{ (e: 'update:searchViewSituation'): void }>();
-
-const onClick = () => {
-  emits('update:searchViewSituation');
+import { GoogleMapGenre } from '~~/constants/googleMap/genres';
+type SearchOptions = {
+  searchFromCurrentLocation: boolean;
+  // MEMO currentLocation取得をsearchの責務にするか検討
+  currentLocation: string;
+  address: string;
+  radius: number;
+  type: GoogleMapGenre;
+  minPriceLevel: number;
+  maxPriceLevel: number;
+};
+const defaultSearchOptions: SearchOptions = {
+  searchFromCurrentLocation: true,
+  currentLocation: '',
+  address: '',
+  radius: 500,
+  type: 'Coffee',
+  minPriceLevel: 1,
+  maxPriceLevel: 4,
 };
 
-const isCurrentLocation = ref(true);
+const searchOptions = ref<SearchOptions>(defaultSearchOptions);
+
+const emits = defineEmits<{
+  (e: 'update:closeSearchView'): void;
+  (e: 'update:decideSearchOptions', searchOptions: SearchOptions): void;
+}>();
+const onClick = () => {
+  emits('update:closeSearchView');
+};
+const decideSearchOption = () => {
+  emits('update:decideSearchOptions', searchOptions);
+};
+
+const changeSearchFromCurrentLocation = () => {
+  searchOptions.value.searchFromCurrentLocation = !searchOptions.value.searchFromCurrentLocation;
+};
 </script>
 
 <template>
@@ -21,13 +51,15 @@ const isCurrentLocation = ref(true);
           <div class="search-body__section-row-wrapper">
             <div class="search-body__section-row">
               <div class="center">現在地から検索</div>
-              <AtomsSwitch />
+              <AtomsSwitch @update:modelValue="changeSearchFromCurrentLocation" />
             </div>
           </div>
-          <div class="search-body__section-row-wrapper" :class="{ dark: isCurrentLocation }">
+          <div
+            class="search-body__section-row-wrapper gap-12"
+            :class="{ dark: searchOptions.searchFromCurrentLocation }"
+          >
             <div class="search-body__section-row">
               <div class="center">住所から検索</div>
-              <AtomsSwitch />
             </div>
             <div class="search-body__section-row">
               <div>駅名検索</div>
@@ -148,6 +180,9 @@ const isCurrentLocation = ref(true);
     align-items: center;
   }
 
+  .gap-12 {
+    gap: 12px 0px;
+  }
   .gap-24 {
     gap: 24px 0px;
   }

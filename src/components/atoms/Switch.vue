@@ -1,11 +1,19 @@
 <script setup lang="ts">
 const status = ref(false);
+const emits = defineEmits<{
+  (e: 'update:modelValue'): void;
+}>();
+
+const onChange = () => {
+  status.value = !status.value;
+  emits('update:modelValue', status.value);
+};
 </script>
 
 <template>
   <div>
     <label class="switch">
-      <input type="checkbox" @click="status = !status" />
+      <input type="checkbox" @click="onChange" />
       <div class="slider round"></div>
     </label>
   </div>
