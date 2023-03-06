@@ -2,15 +2,18 @@
 import { GoogleMapGenre } from '../../constants/googleMap/genres';
 type TipProps = {
   genre: GoogleMapGenre;
+  pushed: boolean;
 };
 
 const props = defineProps<TipProps>();
 
-const isPushed = ref<boolean>(false);
+const emits = defineEmits<{
+  (e: 'update:modelValue'): void;
+}>();
 </script>
 
 <template>
-  <div class="tip" :class="{ pushed: isPushed }" @click="isPushed = !isPushed">
+  <div class="tip" :class="{ pushed: props.pushed }" @click="emits('update:modelValue', props.genre)">
     <div class="tip-text">{{ props.genre }}</div>
   </div>
 </template>

@@ -41,6 +41,10 @@ const changeSearchFromCurrentLocation = () => {
 const changeRadius = (newValue) => {
   searchOptions.value.radius = Math.floor(newValue / 100) * 100;
 };
+
+const setType = (newValue) => {
+  searchOptions.value.type = newValue;
+};
 </script>
 
 <template>
@@ -110,7 +114,7 @@ const changeRadius = (newValue) => {
         <div class="search-body__section-row-wrapper">
           <div class="search-body__section-row genres">
             <template v-for="genre in googleMapGenres">
-              <AtomsTip :genre="genre" />
+              <AtomsTip :genre="genre" :pushed="genre === searchOptions.type" @update:modelValue="setType" />
             </template>
           </div>
         </div>
