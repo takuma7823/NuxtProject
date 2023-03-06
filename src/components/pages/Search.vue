@@ -37,6 +37,10 @@ const decideSearchOption = () => {
 const changeSearchFromCurrentLocation = () => {
   searchOptions.value.searchFromCurrentLocation = !searchOptions.value.searchFromCurrentLocation;
 };
+
+const changeRadius = (newValue) => {
+  searchOptions.value.radius = Math.floor(newValue / 100) * 100;
+};
 </script>
 
 <template>
@@ -56,7 +60,7 @@ const changeSearchFromCurrentLocation = () => {
           </div>
           <div
             class="search-body__section-row-wrapper gap-12"
-            :class="{ dark: searchOptions.searchFromCurrentLocation }"
+            :class="{ dark: !searchOptions.searchFromCurrentLocation }"
           >
             <div class="search-body__section-row">
               <div class="center">住所から検索</div>
@@ -79,10 +83,10 @@ const changeSearchFromCurrentLocation = () => {
         <div class="search-body__section-row-wrapper gap-24">
           <div class="search-body__section-row">
             <div>住所から</div>
-            <div>300m以内</div>
+            <div>{{ searchOptions.radius }}m以内</div>
           </div>
           <div class="search-body__section-row">
-            <MoluculesSlider />
+            <MoluculesSlider @update:modelValue="changeRadius" />
           </div>
         </div>
       </div>

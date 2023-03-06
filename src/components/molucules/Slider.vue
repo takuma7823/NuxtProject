@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useEventListener } from '@vueuse/core';
 
-const inputLeftProperty = ref({ min: 0, max: 100, value: 0 });
+const inputLeftProperty = ref({ min: 100, max: 1000, value: 100 });
 const thumbLeftStyleObject = ref({ left: '0%' });
 const rangeStyleObject = ref({ left: '0%', right: '0%' });
 
@@ -9,10 +9,13 @@ const inputLeft = ref(null);
 const thumbLeft = ref(null);
 const range = ref(null);
 
+const emits = defineEmits<{
+  (e: 'update:modelValue', value: number): void;
+}>();
+
 onMounted(() => {
   const setLeftValue = () => {
     if (inputLeft.value && thumbLeft.value && range.value) {
-      console.log(inputLeftProperty.value);
       inputLeftProperty.value.value = inputLeftProperty.value.value;
       const percent =
         ((inputLeftProperty.value.value - inputLeftProperty.value.min) /
@@ -20,6 +23,7 @@ onMounted(() => {
         100;
       thumbLeftStyleObject.value.left = `${percent}%`;
       rangeStyleObject.value.left = `${percent}%`;
+      emits('update:modelValue', Number(inputLeft.value.value));
     }
   };
   setLeftValue();

@@ -6,7 +6,7 @@ const emits = defineEmits<{
 
 const onChange = () => {
   status.value = !status.value;
-  emits('update:modelValue', status.value);
+  emits('update:modelValue');
 };
 </script>
 
