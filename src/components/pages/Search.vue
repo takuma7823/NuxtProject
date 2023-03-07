@@ -49,19 +49,17 @@ const changePriceLevel = (newValue) => {
 };
 
 const resetSearchOptions = () => {
-  console.log(searchOptions.value);
   searchOptions.value = { ...defaultSearchOptions };
-  console.log(searchOptions.value);
 };
 
-const decideSearchOption = () => {
-  emits('update:decideSearchOptions', searchOptions);
+const decideSearchOptions = () => {
+  emits('update:decideSearchOptions', searchOptions.value);
+  emits('update:closeSearchView');
 };
 </script>
 
 <template>
   <div>
-    {{ searchOptions }}
     <MoluculesSearchHeader @click="onClick" />
 
     <div class="search-body">
@@ -137,7 +135,7 @@ const decideSearchOption = () => {
       </div>
     </div>
   </div>
-  <MoluculesButtonBar @update:reset="resetSearchOptions" />
+  <MoluculesButtonBar @update:reset="resetSearchOptions" @update:decide="decideSearchOptions" />
 </template>
 
 <style lang="scss" scoped>

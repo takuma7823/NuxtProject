@@ -78,6 +78,10 @@ const clickFavorite = (): void => {
   console.log('お気に入り');
   changeStore();
 };
+
+const log = (searchOptions) => {
+  console.log(searchOptions);
+};
 </script>
 
 <template>
@@ -89,7 +93,7 @@ const clickFavorite = (): void => {
     <OrganismsHomeFooter @click-no="clickNo" @click-favorite="clickFavorite" />
   </div>
   <div class="search" :class="searchViewSituation">
-    <PagesSearch @update:closeSearchView="closeSearchView" />
+    <PagesSearch @update:closeSearchView="closeSearchView" @update:decideSearchOptions="log" />
   </div>
 </template>
 
