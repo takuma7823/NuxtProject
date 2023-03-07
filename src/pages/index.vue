@@ -6,7 +6,6 @@ const storeIndex = ref<number>(0);
 const storeArray = ref<string[]>([]);
 const storeDetailsArray = ref<string[]>([]);
 
-
 // MEMO hookで切り出しても良いとは思っている。
 const searchViewSituation = ref<'open' | 'close' | 'default'>('default');
 const openSearchView = () => {
@@ -76,8 +75,12 @@ const clickNo = (): void => {
 };
 
 const clickFavorite = (): void => {
-  console.log('お気に入り')
+  console.log('お気に入り');
   changeStore();
+};
+
+const log = (searchOptions) => {
+  console.log(searchOptions);
 };
 </script>
 
@@ -85,18 +88,12 @@ const clickFavorite = (): void => {
   <div class="home">
     <OrganismsHomeHeader @update:searchViewSituation="openSearchView" />
     <div class="home-body">
-      <OrganismsPostCard
-        :storeInfo="storeInfo"
-        :photos="photos"
-      />
+      <OrganismsPostCard :storeInfo="storeInfo" :photos="photos" />
     </div>
-    <OrganismsHomeFooter
-      @click-no="clickNo"
-      @click-favorite="clickFavorite"
-    />
+    <OrganismsHomeFooter @click-no="clickNo" @click-favorite="clickFavorite" />
   </div>
   <div class="search" :class="searchViewSituation">
-    <PagesSearch @update:searchViewSituation="closeSearchView" />
+    <PagesSearch @update:closeSearchView="closeSearchView" @update:decideSearchOptions="log" />
   </div>
 </template>
 

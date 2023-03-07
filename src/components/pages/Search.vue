@@ -1,9 +1,60 @@
 <script setup lang="ts">
 import { googleMapGenres } from '~~/constants/googleMap/genres';
-const emits = defineEmits<{ (e: 'update:searchViewSituation'): void }>();
+import { GoogleMapGenre } from '~~/constants/googleMap/genres';
+type SearchOptions = {
+  searchFromCurrentLocation: boolean;
+  // MEMO currentLocation取得をsearchの責務にするか検討
+  currentLocation: string;
+  address: string;
+  radius: number;
+  type: GoogleMapGenre;
+  minPriceLevel: number;
+  maxPriceLevel: number;
+};
+const defaultSearchOptions: SearchOptions = {
+  searchFromCurrentLocation: true,
+  currentLocation: '',
+  address: '',
+  radius: 500,
+  type: 'Coffee',
+  minPriceLevel: 1,
+  maxPriceLevel: 4,
+};
 
+const searchOptions = ref<SearchOptions>({ ...defaultSearchOptions });
+
+const emits = defineEmits<{
+  (e: 'update:closeSearchView'): void;
+  (e: 'update:decideSearchOptions', searchOptions: SearchOptions): void;
+}>();
 const onClick = () => {
-  emits('update:searchViewSituation');
+  emits('update:closeSearchView');
+};
+
+const changeSearchFromCurrentLocation = () => {
+  searchOptions.value.searchFromCurrentLocation = !searchOptions.value.searchFromCurrentLocation;
+};
+
+const changeRadius = (newValue) => {
+  searchOptions.value.radius = Math.floor(newValue / 100) * 100;
+};
+
+const setType = (newValue) => {
+  searchOptions.value.type = newValue;
+};
+
+const changePriceLevel = (newValue) => {
+  searchOptions.value.minPriceLevel = newValue.min;
+  searchOptions.value.maxPriceLevel = newValue.max;
+};
+
+const resetSearchOptions = () => {
+  searchOptions.value = { ...defaultSearchOptions };
+};
+
+const decideSearchOptions = () => {
+  emits('update:decideSearchOptions', searchOptions.value);
+  emits('update:closeSearchView');
 };
 
 const isCurrentLocation = ref(true);
@@ -21,13 +72,18 @@ const isCurrentLocation = ref(true);
           <div class="search-body__section-row-wrapper">
             <div class="search-body__section-row">
               <div class="center">現在地から検索</div>
-              <AtomsSwitch />
+              <AtomsSwitch
+                @update:modelValue="changeSearchFromCurrentLocation"
+                :modelValue="searchOptions.searchFromCurrentLocation"
+              />
             </div>
           </div>
-          <div class="search-body__section-row-wrapper" :class="{ dark: isCurrentLocation }">
+          <div
+            class="search-body__section-row-wrapper gap-12"
+            :class="{ dark: searchOptions.searchFromCurrentLocation }"
+          >
             <div class="search-body__section-row">
               <div class="center">住所から検索</div>
-              <AtomsSwitch />
             </div>
             <div class="search-body__section-row">
               <div>駅名検索</div>
@@ -47,10 +103,10 @@ const isCurrentLocation = ref(true);
         <div class="search-body__section-row-wrapper gap-24">
           <div class="search-body__section-row">
             <div>住所から</div>
-            <div>300m以内</div>
+            <div>{{ searchOptions.radius }}m以内</div>
           </div>
           <div class="search-body__section-row">
-            <MoluculesSlider />
+            <MoluculesSlider @update:modelValue="changeRadius" :modelValue="searchOptions.radius" />
           </div>
         </div>
       </div>
@@ -60,10 +116,10 @@ const isCurrentLocation = ref(true);
         <div class="search-body__section-title">価格帯</div>
         <div class="search-body__section-row-wrapper gap-24">
           <div class="search-body__section-row end">
-            <div>¥1000 ~ 2000</div>
+            <div>{{ '¥'.repeat(searchOptions.minPriceLevel) }} ~ {{ '¥'.repeat(searchOptions.maxPriceLevel) }}</div>
           </div>
           <div class="search-body__section-row">
-            <MoluculesScopeBar />
+            <MoluculesScopeBar @update:modelValue="changePriceLevel" />
           </div>
         </div>
       </div>
@@ -74,14 +130,14 @@ const isCurrentLocation = ref(true);
         <div class="search-body__section-row-wrapper">
           <div class="search-body__section-row genres">
             <template v-for="genre in googleMapGenres">
-              <AtomsTip :genre="genre" />
+              <AtomsTip :genre="genre" :pushed="genre === searchOptions.type" @update:modelValue="setType" />
             </template>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <MoluculesButtonBar />
+  <MoluculesButtonBar @update:reset="resetSearchOptions" @update:decide="decideSearchOptions" />
 </template>
 
 <style lang="scss" scoped>
@@ -148,6 +204,9 @@ const isCurrentLocation = ref(true);
     align-items: center;
   }
 
+  .gap-12 {
+    gap: 12px 0px;
+  }
   .gap-24 {
     gap: 24px 0px;
   }
