@@ -204,10 +204,10 @@ const isCurrentLocation = ref(true);
     align-items: center;
   }
 
-  <<<<<<< HEAD .gap-12 {
+  .gap-12 {
     gap: 12px 0px;
   }
-  =======>>>>>>>42d0372aaf1f051b7568b99943ae2f2341216dbb .gap-24 {
+  .gap-24 {
     gap: 24px 0px;
   }
 }
