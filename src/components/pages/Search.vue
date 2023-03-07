@@ -56,6 +56,8 @@ const decideSearchOptions = () => {
   emits('update:decideSearchOptions', searchOptions.value);
   emits('update:closeSearchView');
 };
+
+const isCurrentLocation = ref(true);
 </script>
 
 <template>
@@ -202,10 +204,10 @@ const decideSearchOptions = () => {
     align-items: center;
   }
 
-  .gap-12 {
+  <<<<<<< HEAD .gap-12 {
     gap: 12px 0px;
   }
-  .gap-24 {
+  =======>>>>>>>42d0372aaf1f051b7568b99943ae2f2341216dbb .gap-24 {
     gap: 24px 0px;
   }
 }
