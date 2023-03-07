@@ -9,7 +9,6 @@ const props = defineProps<SliderProps>();
 const minValue = 100;
 const maxValue = 1000;
 const ratio = (props.modelValue / (maxValue - minValue + 100)) * 100;
-
 const inputLeftProperty = ref({ min: minValue, max: maxValue, value: props.modelValue });
 const thumbLeftStyleObject = ref({ left: `${ratio}%` });
 const rangeStyleObject = ref({ left: `${ratio}%`, right: '0%' });
@@ -21,6 +20,16 @@ const range = ref(null);
 const emits = defineEmits<{
   (e: 'update:modelValue', value: number): void;
 }>();
+
+const { modelValue } = toRefs(props);
+
+// MEMO 現状、setLeftValue関数と2重でパーツの位置を管理している。
+watch(modelValue, () => {
+  const percent = (modelValue.value / (maxValue - minValue + 100)) * 100;
+  thumbLeftStyleObject.value.left = `${percent}%`;
+  rangeStyleObject.value.left = `${percent}%`;
+  inputLeftProperty.value.value = modelValue.value;
+});
 
 onMounted(() => {
   const setLeftValue = () => {
