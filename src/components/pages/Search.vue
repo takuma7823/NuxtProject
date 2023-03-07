@@ -21,7 +21,7 @@ const defaultSearchOptions: SearchOptions = {
   maxPriceLevel: 4,
 };
 
-const searchOptions = ref<SearchOptions>(defaultSearchOptions);
+const searchOptions = ref<SearchOptions>({ ...defaultSearchOptions });
 
 const emits = defineEmits<{
   (e: 'update:closeSearchView'): void;
@@ -29,9 +29,6 @@ const emits = defineEmits<{
 }>();
 const onClick = () => {
   emits('update:closeSearchView');
-};
-const decideSearchOption = () => {
-  emits('update:decideSearchOptions', searchOptions);
 };
 
 const changeSearchFromCurrentLocation = () => {
@@ -45,10 +42,26 @@ const changeRadius = (newValue) => {
 const setType = (newValue) => {
   searchOptions.value.type = newValue;
 };
+
+const changePriceLevel = (newValue) => {
+  searchOptions.value.minPriceLevel = newValue.min;
+  searchOptions.value.maxPriceLevel = newValue.max;
+};
+
+const resetSearchOptions = () => {
+  console.log(searchOptions.value);
+  searchOptions.value = { ...defaultSearchOptions };
+  console.log(searchOptions.value);
+};
+
+const decideSearchOption = () => {
+  emits('update:decideSearchOptions', searchOptions);
+};
 </script>
 
 <template>
   <div>
+    {{ searchOptions }}
     <MoluculesSearchHeader @click="onClick" />
 
     <div class="search-body">
@@ -59,12 +72,15 @@ const setType = (newValue) => {
           <div class="search-body__section-row-wrapper">
             <div class="search-body__section-row">
               <div class="center">現在地から検索</div>
-              <AtomsSwitch @update:modelValue="changeSearchFromCurrentLocation" />
+              <AtomsSwitch
+                @update:modelValue="changeSearchFromCurrentLocation"
+                :modelValue="searchOptions.searchFromCurrentLocation"
+              />
             </div>
           </div>
           <div
             class="search-body__section-row-wrapper gap-12"
-            :class="{ dark: !searchOptions.searchFromCurrentLocation }"
+            :class="{ dark: searchOptions.searchFromCurrentLocation }"
           >
             <div class="search-body__section-row">
               <div class="center">住所から検索</div>
@@ -100,10 +116,10 @@ const setType = (newValue) => {
         <div class="search-body__section-title">価格帯</div>
         <div class="search-body__section-row-wrapper gap-24">
           <div class="search-body__section-row end">
-            <div>¥1000 ~ 2000</div>
+            <div>{{ '¥'.repeat(searchOptions.minPriceLevel) }} ~ {{ '¥'.repeat(searchOptions.maxPriceLevel) }}</div>
           </div>
           <div class="search-body__section-row">
-            <MoluculesScopeBar />
+            <MoluculesScopeBar @update:modelValue="changePriceLevel" />
           </div>
         </div>
       </div>
@@ -121,7 +137,7 @@ const setType = (newValue) => {
       </div>
     </div>
   </div>
-  <MoluculesButtonBar />
+  <MoluculesButtonBar @update:reset="resetSearchOptions" />
 </template>
 
 <style lang="scss" scoped>

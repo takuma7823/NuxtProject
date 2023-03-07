@@ -1,11 +1,15 @@
 <script setup lang="ts">
-const status = ref(false);
+type SwitchProps = {
+  modelValue: boolean;
+};
+
+const props = defineProps<SwitchProps>();
+
 const emits = defineEmits<{
   (e: 'update:modelValue'): void;
 }>();
 
 const onChange = () => {
-  status.value = !status.value;
   emits('update:modelValue');
 };
 </script>
@@ -13,7 +17,7 @@ const onChange = () => {
 <template>
   <div>
     <label class="switch">
-      <input type="checkbox" @click="onChange" />
+      <input type="checkbox" :checked="props.modelValue" @click="onChange" />
       <div class="slider round"></div>
     </label>
   </div>
