@@ -1,9 +1,18 @@
 <script setup lang="ts">
 import { useEventListener } from '@vueuse/core';
 
-const inputLeftProperty = ref({ min: 100, max: 1000, value: 100 });
-const thumbLeftStyleObject = ref({ left: '0%' });
-const rangeStyleObject = ref({ left: '0%', right: '0%' });
+type SliderProps = {
+  modelValue: number;
+};
+
+const props = defineProps<SliderProps>();
+const minValue = 100;
+const maxValue = 1000;
+const ratio = (props.modelValue / (maxValue - minValue + 100)) * 100;
+
+const inputLeftProperty = ref({ min: minValue, max: maxValue, value: props.modelValue });
+const thumbLeftStyleObject = ref({ left: `${ratio}%` });
+const rangeStyleObject = ref({ left: `${ratio}%`, right: '0%' });
 
 const inputLeft = ref(null);
 const thumbLeft = ref(null);

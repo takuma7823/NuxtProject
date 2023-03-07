@@ -104,7 +104,7 @@ const decideSearchOptions = () => {
             <div>{{ searchOptions.radius }}m以内</div>
           </div>
           <div class="search-body__section-row">
-            <MoluculesSlider @update:modelValue="changeRadius" />
+            <MoluculesSlider @update:modelValue="changeRadius" :modelValue="searchOptions.radius" />
           </div>
         </div>
       </div>
