@@ -28,7 +28,6 @@ const { data: data } = await useFetch('https://maps.googleapis.com/maps/api/plac
     language: 'ja',
   },
 });
-console.log('data',data)
 
 storeArray.value = data.value.results;
 
