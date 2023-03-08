@@ -30,6 +30,6 @@ import CloseButton from '../../assets/svgs/closeButton.svg';
 .close-button {
   position: absolute;
   top: 22px;
-  left: 20px;
+  left: 24px;
 }
 </style>
