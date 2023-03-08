@@ -58,7 +58,6 @@ const changePhoto = (event): void => {
       @touchstart="changePhoto"
       height="400px" cover
     />
-
     <v-card-subtitle> 1,000 miles of wonder </v-card-subtitle>
     <v-card-subtitle> 1,000 miles of wonder </v-card-subtitle>
 

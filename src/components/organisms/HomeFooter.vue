@@ -33,9 +33,9 @@ const clickFavorite = (): void => {
 
 <style lang="scss" scoped>
 .home-footer {
-  height: 74px;
   width: 100svw;
-  padding: 0 36px;
+  background-color: #fff;
+  padding: 8vw 8vw;
   &__button-bar {
     height: 100%;
     display: flex;

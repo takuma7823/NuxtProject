@@ -22,11 +22,13 @@ const { data: data } = await useFetch('https://maps.googleapis.com/maps/api/plac
   params: {
     key: apiKey,
     location: '35.78928207428572, 139.4560333981599',
-    radius: '50',
+    radius: '10',
     type: 'store',
+    // keyword: 'cafe',
     language: 'ja',
   },
 });
+console.log('data',data)
 
 storeArray.value = data.value.results;
 
@@ -103,7 +105,7 @@ const clickFavorite = (): void => {
 
 <style lang="scss" scoped>
 .postcard {
-  margin: 8vw 2vw 0;
+  margin: 12vw 2vw 0;
 }
 
 .home {
@@ -113,7 +115,8 @@ const clickFavorite = (): void => {
 }
 
 .home-footer {
-  margin-top: 12vw;
+  position: absolute;
+  bottom: 0;
 }
 
 .search {

@@ -43,6 +43,7 @@ const onClick = () => {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  background-color: #fff;
 
   &__navigation {
     width: 300px;
