@@ -5,6 +5,7 @@ const apiKey = ref<string>(runtimeConfig.public.apiKey);
 const storeIndex = ref<number>(0);
 const storeArray = ref<string[]>([]);
 const storeDetailsArray = ref<string[]>([]);
+const isLoading = ref(false);
 
 // MEMO hookで切り出しても良いとは思っている。
 const searchViewSituation = ref<'open' | 'close' | 'default'>('default');
@@ -87,8 +88,12 @@ const clickFavorite = (): void => {
 };
 
 const searchStore = async (searchOptions: any) => {
+  isLoading.value = true;
+
   if (searchOptions.searchFromCurrentLocation) {
     const position: any = await getPosition();
+
+    if (!position) { return };
 
     const { data: data } = await useFetch('/api/maps/api/place/nearbysearch/json', {
       params: {
@@ -127,18 +132,28 @@ const searchStore = async (searchOptions: any) => {
   } else {
     //他の検索方法
   }
+
+  isLoading.value = false;
 };
 
 async function getPosition() {
-  return new Promise((resolve, reject) => {
-    window.navigator.geolocation.getCurrentPosition(resolve, reject);
-  });
-}
+  if (window.navigator.geolocation) {
+    return new Promise((resolve, reject) => {
+      window.navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
+  }
+  return false;
+};
+
+const loading = computed(() => {
+  return isLoading.value;
+});
 </script>
 
 <template>
   <div class="home">
     <OrganismsHomeHeader @update:searchViewSituation="openSearchView" />
+    <OrganismsLoader :is-loading="loading"></OrganismsLoader>
     <div class="home-body">
       <OrganismsPostCard
         :storeInfo="storeInfo"
