@@ -23,12 +23,20 @@ const props = defineProps<{
 }>();
 
 const getStoreName = computed((): string => {
-  return props.storeInfo.name;
+  if (props.storeInfo.name) {
+    return props.storeInfo.name;
+  } else {
+    return '該当の店舗がありません。';
+  }
 });
 
 const getStorePhotoUrl = computed((): string => {
-  const photoReference = props.photos[photoIndex.value].photo_reference;
-  return photoUrlFond + '&photoreference=' + photoReference + '&key=' + apiKey;
+  if (props.photos.length) {
+    const photoReference = props.photos[photoIndex.value].photo_reference;
+    return photoUrlFond + '&photoreference=' + photoReference + '&key=' + apiKey;
+  } else {
+    return '';
+  }
 });
 
 const changePhoto = (event): void => {
@@ -53,11 +61,18 @@ const changePhoto = (event): void => {
     <v-card-title>{{ getStoreName }}</v-card-title>
 
     <v-img
+      v-if="getStorePhotoUrl"
       ref="imgEl"
       :src="getStorePhotoUrl"
       @touchstart="changePhoto"
       height="400px" cover
     />
+    <v-img
+      v-else
+      height="400px" cover
+    >
+
+    </v-img>
     <v-card-subtitle> 1,000 miles of wonder </v-card-subtitle>
     <v-card-subtitle> 1,000 miles of wonder </v-card-subtitle>
 

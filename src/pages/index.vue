@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const runtimeConfig = useRuntimeConfig();
-const apiKey = runtimeConfig.public.apiKey;
+const apiKey = ref<string>(runtimeConfig.public.apiKey);
 // const radius = ref<string>('');
 const storeIndex = ref<number>(0);
 const storeArray = ref<string[]>([]);
@@ -18,31 +18,34 @@ const closeSearchView = () => {
   }, 200);
 };
 
+// 節約のために初期値は配列に値が入らないようにしている
 const { data: data } = await useFetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
   params: {
-    key: apiKey,
+    key: apiKey.value,
     location: '35.78928207428572, 139.4560333981599',
-    radius: '10',
+    radius: '3',
     type: 'store',
     // keyword: 'cafe',
     language: 'ja',
   },
 });
 
-storeArray.value = data.value.results;
+if (data?.value?.status === 'OK') {
+  storeArray.value = data.value.results;
 
-await Promise.all(
-  storeArray.value.map(async function (store) {
-    const { data: data } = await useFetch('https://maps.googleapis.com/maps/api/place/details/json', {
-      params: {
-        key: apiKey,
-        fields: 'photos',
-        place_id: store.place_id,
-      },
-    });
-    storeDetailsArray.value.push(data);
-  })
-);
+  await Promise.all(
+    storeArray.value.map(async function (store) {
+      const { data: data } = await useFetch('https://maps.googleapis.com/maps/api/place/details/json', {
+        params: {
+          key: apiKey.value,
+          fields: 'photos',
+          place_id: store.place_id,
+        },
+      });
+      storeDetailsArray.value.push(data);
+    })
+  );
+}
 
 const storeInfo = computed(() => {
   if (storeArray.value[storeIndex.value]) {
@@ -53,7 +56,7 @@ const storeInfo = computed(() => {
 });
 
 const photos = computed(() => {
-  if (storeDetailsArray.value[storeIndex.value].value.result.photos) {
+  if (storeDetailsArray.value.length) {
     return storeDetailsArray.value[storeIndex.value].value.result.photos;
   } else {
     // MEMO 初期状態は空配列を返す。
@@ -62,27 +65,75 @@ const photos = computed(() => {
 });
 
 const changeStore = (): void => {
-  const storeLength = storeArray.value.length - 1;
+  // 節約のため制御
+  if (storeIndex.value < 1) {
+    const storeLength = storeArray.value.length - 1;
 
-  if (storeLength > storeIndex.value) {
-    storeIndex.value = storeIndex.value + 1;
-    storeInfo.data = storeArray.value[storeIndex.value];
+    if (storeLength > storeIndex.value) {
+      storeIndex.value = storeIndex.value + 1;
+      storeInfo.data = storeArray.value[storeIndex.value];
+    }
   }
 };
 
 const clickNo = (): void => {
-  console.log('No');
+  console.log('Noの時の処理を入れる');
   changeStore();
 };
 
 const clickFavorite = (): void => {
-  console.log('お気に入り');
+  console.log('お気に入りの時の処理を入れる');
   changeStore();
 };
 
-const log = (searchOptions) => {
-  console.log(searchOptions);
+const searchStore = async (searchOptions: any) => {
+  if (searchOptions.searchFromCurrentLocation) {
+    const position: any = await getPosition();
+
+    const { data: data } = await useFetch('/api/maps/api/place/nearbysearch/json', {
+      params: {
+        key: apiKey.value,
+        location: position.coords.latitude + ', ' + position.coords.longitude,
+        // 節約のため強制的に10mにする
+        // radius: searchOptions.radius,
+        radius: '10',
+        type: 'store',
+        keyword: 'cafe',
+        language: 'ja',
+      },
+    });
+
+    if (data?.value?.status === 'OK') {
+      storeArray.value = data.value.results;
+
+      await Promise.all(
+        storeArray.value.map(async function (store, index) {
+          // 節約のため2件目までしか取得しない
+          if (index < 3) {
+            const { data: data } = await useFetch('/api/maps/api/place/details/json', {
+              params: {
+                key: apiKey.value,
+                fields: 'photos',
+                place_id: store.place_id,
+              },
+            });
+            storeDetailsArray.value.push(data);
+          }
+        })
+      );
+
+      storeIndex.value = 0;
+    }
+  } else {
+    //他の検索方法
+  }
 };
+
+async function getPosition() {
+  return new Promise((resolve, reject) => {
+    window.navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
+}
 </script>
 
 <template>
@@ -101,8 +152,8 @@ const log = (searchOptions) => {
       class="home-footer"
     />
     <div class="search" :class="searchViewSituation">
-    <PagesSearch @update:closeSearchView="closeSearchView" @update:decideSearchOptions="log" />
-  </div>
+      <PagesSearch @update:closeSearchView="closeSearchView" @update:decideSearchOptions="searchStore" />
+    </div>
   </div>
 </template>
 
