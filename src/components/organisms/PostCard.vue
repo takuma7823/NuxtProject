@@ -126,7 +126,7 @@ const distance = (lat1: number, lng1: number, lat2: number, lng2: number): any =
 
     <v-card-subtitle v-if="getDistanceFromCurrentLocation !== 0 && !isNaN(getDistanceFromCurrentLocation)">{{ getDistanceFromCurrentLocation }} m</v-card-subtitle>
     <v-card-subtitle v-if="getStoreOpen !== '0'">{{ getStoreOpen }}</v-card-subtitle>
-    <v-card-subtitle v-if="getPriceLevel !== '0'">{{ getPriceLevel }}</v-card-subtitle>
+    <v-card-subtitle v-if="getPriceLevel !== '0'">Price：{{ getPriceLevel }}</v-card-subtitle>
 
     <v-card-text>
       I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping,
