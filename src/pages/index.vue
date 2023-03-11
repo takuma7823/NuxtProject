@@ -6,6 +6,10 @@ const storeIndex = ref<number>(0);
 const storeArray = ref<string[]>([]);
 const storeDetailsArray = ref<string[]>([]);
 const isLoading = ref(false);
+const currentLocation = reactive({
+  latitude: 0,
+  longitude: 0
+});
 
 // MEMO hookで切り出しても良いとは思っている。
 const searchViewSituation = ref<'open' | 'close' | 'default'>('default');
@@ -95,13 +99,16 @@ const searchStore = async (searchOptions: any) => {
 
     if (!position) { return };
 
+    currentLocation.latitude = position.coords.latitude;
+    currentLocation.longitude = position.coords.longitude;
+
     const { data: data } = await useFetch('/api/maps/api/place/nearbysearch/json', {
       params: {
         key: apiKey.value,
-        location: position.coords.latitude + ', ' + position.coords.longitude,
+        location: currentLocation.latitude + ', ' + currentLocation.longitude,
         // 節約のため強制的に10mにする
         // radius: searchOptions.radius,
-        radius: '10',
+        radius: '50',
         type: 'store',
         keyword: 'cafe',
         language: 'ja',
@@ -156,8 +163,9 @@ const loading = computed(() => {
     <OrganismsLoader :is-loading="loading"></OrganismsLoader>
     <div class="home-body">
       <OrganismsPostCard
-        :storeInfo="storeInfo"
+        :store-info="storeInfo"
         :photos="photos"
+        :current-location="currentLocation"
         class="postcard"
       />
     </div>

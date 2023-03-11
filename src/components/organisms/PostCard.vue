@@ -19,7 +19,8 @@ const photoIndex = ref<number>(0);
 
 const props = defineProps<{
   storeInfo: Object,
-  photos: any[]
+  photos: any[],
+  currentLocation: Object,
 }>();
 
 const getStoreName = computed((): string => {
@@ -28,6 +29,47 @@ const getStoreName = computed((): string => {
   } else {
     return '該当の店舗がありません。';
   }
+});
+
+const getDistanceFromCurrentLocation = computed((): number => {
+  if (props.currentLocation.latitude && props.storeInfo) {
+    return distance(props.currentLocation.latitude, props.currentLocation.longitude, props.storeInfo?.geometry?.location?.lat, props.storeInfo?.geometry?.location?.lng);
+  }
+
+  return 0;
+});
+
+const getStoreOpen = computed((): string => {
+  if (props.storeInfo.length !== 0) {
+    if (props.storeInfo?.opening_hours?.open_now) {
+      return 'Opening';
+    } else {
+      return 'Closing';
+    }
+  }
+
+  return '0';
+});
+
+const getPriceLevel = computed((): string => {
+  if (props.storeInfo?.length !== 0) {
+    switch(props.storeInfo?.price_level) {
+      case 0:
+        return 'Free';
+      case 1:
+        return 'Reasonable';
+      case 2:
+        return 'Standard';
+      case 3:
+        return 'High';
+      case 4:
+        return 'Very High';
+      default:
+        return '0';
+  }
+  }
+
+  return '0';
 });
 
 const getStorePhotoUrl = computed((): string => {
@@ -39,7 +81,7 @@ const getStorePhotoUrl = computed((): string => {
   }
 });
 
-const changePhoto = (event): void => {
+const changePhoto = (event: any): void => {
   const touchX = event.changedTouches[0].clientX;
   const imageEl = imgEl.value?.$el;
   const imageWidth = imageEl.clientWidth;
@@ -51,6 +93,16 @@ const changePhoto = (event): void => {
   } else if (touchX < imageCenter && photoIndex.value > 0) {
     photoIndex.value = photoIndex.value - 1;
   }
+};
+
+const distance = (lat1: number, lng1: number, lat2: number, lng2: number): any => {
+  const R = Math.PI / 180;
+  lat1 *= R;
+  lng1 *= R;
+  lat2 *= R;
+  lng2 *= R;
+
+  return Math.floor((6371 * Math.acos(Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1) + Math.sin(lat1) * Math.sin(lat2))) * 1000);
 }
 </script>
 
@@ -70,11 +122,11 @@ const changePhoto = (event): void => {
     <v-img
       v-else
       height="400px" cover
-    >
+    />
 
-    </v-img>
-    <v-card-subtitle> 1,000 miles of wonder </v-card-subtitle>
-    <v-card-subtitle> 1,000 miles of wonder </v-card-subtitle>
+    <v-card-subtitle v-if="getDistanceFromCurrentLocation !== 0 && !isNaN(getDistanceFromCurrentLocation)">{{ getDistanceFromCurrentLocation }} m</v-card-subtitle>
+    <v-card-subtitle v-if="getStoreOpen !== '0'">{{ getStoreOpen }}</v-card-subtitle>
+    <v-card-subtitle v-if="getPriceLevel !== '0'">{{ getPriceLevel }}</v-card-subtitle>
 
     <v-card-text>
       I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping,
