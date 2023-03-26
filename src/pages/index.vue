@@ -103,17 +103,17 @@ const searchStore = async (searchOptions: any) => {
     currentLocation.latitude = position.coords.latitude;
     currentLocation.longitude = position.coords.longitude;
 
+    const params = {
+      key: apiKey.value,
+      location: currentLocation.latitude + ', ' + currentLocation.longitude,
+      radius: searchOptions.radius,
+      type: 'store',
+      keyword: searchOptions.type,
+      language: 'ja',
+    };
+
     const { data: data } = await useFetch('/api/maps/api/place/nearbysearch/json', {
-      params: {
-        key: apiKey.value,
-        location: currentLocation.latitude + ', ' + currentLocation.longitude,
-        // 節約のため強制的に10mにする
-        // radius: searchOptions.radius,
-        radius: '500',
-        type: 'store',
-        keyword: 'cafe',
-        language: 'ja',
-      },
+      params: params
     });
 
     if (data?.value?.status === 'OK') {
