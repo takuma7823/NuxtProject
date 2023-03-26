@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { distance } from '@/helpers/Distance';
 const runtimeConfig = useRuntimeConfig();
 const apiKey = ref<string>(runtimeConfig.public.apiKey);
 // const radius = ref<string>('');
@@ -108,7 +109,7 @@ const searchStore = async (searchOptions: any) => {
         location: currentLocation.latitude + ', ' + currentLocation.longitude,
         // 節約のため強制的に10mにする
         // radius: searchOptions.radius,
-        radius: '50',
+        radius: '500',
         type: 'store',
         keyword: 'cafe',
         language: 'ja',
@@ -117,6 +118,8 @@ const searchStore = async (searchOptions: any) => {
 
     if (data?.value?.status === 'OK') {
       storeArray.value = data.value.results;
+
+      sortStoreForDistance();
 
       await Promise.all(
         storeArray.value.map(async function (store, index) {
@@ -143,6 +146,16 @@ const searchStore = async (searchOptions: any) => {
   isLoading.value = false;
 };
 
+const sortStoreForDistance = async (): void  => {
+  storeArray.value.forEach(store => {
+    store['distance'] = distance(currentLocation.latitude, currentLocation.longitude, store.geometry?.location?.lat, store.geometry?.location?.lng);
+  });
+
+  storeArray.value = storeArray.value.sort(function(a, b) {
+    return (a.distance < b.distance) ? -1 : 1;
+  });
+};
+
 async function getPosition() {
   if (window.navigator.geolocation) {
     return new Promise((resolve, reject) => {
@@ -155,6 +168,7 @@ async function getPosition() {
 const loading = computed(() => {
   return isLoading.value;
 });
+
 </script>
 
 <template>
@@ -165,7 +179,6 @@ const loading = computed(() => {
       <OrganismsPostCard
         :store-info="storeInfo"
         :photos="photos"
-        :current-location="currentLocation"
         class="postcard"
       />
     </div>

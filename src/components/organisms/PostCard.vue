@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PriceLevel } from '@/models/enum/PriceLevel';
 // interface PostCardProps {
 // logo: string;
 // storeName: string;
@@ -20,23 +21,22 @@ const photoIndex = ref<number>(0);
 const props = defineProps<{
   storeInfo: Object,
   photos: any[],
-  currentLocation: Object,
 }>();
 
 const getStoreName = computed((): string => {
   if (props.storeInfo.name) {
     return props.storeInfo.name;
   } else {
-    return '該当の店舗がありません。';
+    return 'No Data';
   }
 });
 
-const getDistanceFromCurrentLocation = computed((): number => {
-  if (props.currentLocation.latitude && props.storeInfo) {
-    return distance(props.currentLocation.latitude, props.currentLocation.longitude, props.storeInfo?.geometry?.location?.lat, props.storeInfo?.geometry?.location?.lng);
+const getStoreDistance = computed((): string => {
+  if (props.storeInfo.distance) {
+    return props.storeInfo.distance;
+  } else {
+    return 'No Data';
   }
-
-  return 0;
 });
 
 const getStoreOpen = computed((): string => {
@@ -53,20 +53,7 @@ const getStoreOpen = computed((): string => {
 
 const getPriceLevel = computed((): string => {
   if (props.storeInfo?.length !== 0) {
-    switch(props.storeInfo?.price_level) {
-      case 0:
-        return 'Free';
-      case 1:
-        return 'Reasonable';
-      case 2:
-        return 'Standard';
-      case 3:
-        return 'High';
-      case 4:
-        return 'Very High';
-      default:
-        return '0';
-  }
+    return PriceLevel[props.storeInfo?.price_level];
   }
 
   return '0';
@@ -95,15 +82,6 @@ const changePhoto = (event: any): void => {
   }
 };
 
-const distance = (lat1: number, lng1: number, lat2: number, lng2: number): any => {
-  const R = Math.PI / 180;
-  lat1 *= R;
-  lng1 *= R;
-  lat2 *= R;
-  lng2 *= R;
-
-  return Math.floor((6371 * Math.acos(Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1) + Math.sin(lat1) * Math.sin(lat2))) * 1000);
-}
 </script>
 
 <template>
@@ -124,7 +102,7 @@ const distance = (lat1: number, lng1: number, lat2: number, lng2: number): any =
       height="400px" cover
     />
 
-    <v-card-subtitle v-if="getDistanceFromCurrentLocation !== 0 && !isNaN(getDistanceFromCurrentLocation)">{{ getDistanceFromCurrentLocation }} m</v-card-subtitle>
+    <v-card-subtitle>{{ getStoreDistance }}</v-card-subtitle>
     <v-card-subtitle v-if="getStoreOpen !== '0'">{{ getStoreOpen }}</v-card-subtitle>
     <v-card-subtitle v-if="getPriceLevel !== '0'">Price：{{ getPriceLevel }}</v-card-subtitle>
 
